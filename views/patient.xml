@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Views -->
+        <!-- Form Views -->
+        <record model="ir.ui.view" id="patient_form_view">
+            <field name="name">patient.form</field>
+            <field name="model">hospital.patient</field>
+            <field name="priority" eval="16"/>
+            <field name="arch" type="xml">
+                <form string="Patient form">
+                    <header>
+                        <button id="btn_draft" name="draft_action" string="Draft" type="object"
+                                class="btn-info"
+                                help="Mark as Draft"
+                                states="confirm,done,cancel"
+                        />
+                        <button id="btn_confirm" name="confirm_action" string="Confirm" type="object"
+                                class="btn-primary"
+                                help="Change Status to Confirmed"
+                                states="draft,done,cancel"
+                        />
+                        <button id="btn_done" name="done_action" string="Done" type="object"
+                                class="btn-success"
+                                help="Change Status to Done"
+                                states="draft,confirm,cancel"
+                        />
+                        <button id="btn_cancel" name="cancel_action" string="Cancel" type="object"
+                                class="btn-danger"
+                                help="Mark as Cancelled"
+                                states="confirm,done,draft"
+                        />
+
+                        <field name="state" widget="statusbar" options="{'clickable':0}"
+                               statusbar_visible="draft,confirm,done,cancel"/>
+                    </header>
+
+                    <sheet>
+                        <field name="patient_photo" widget="image" class="oe_avatar"/>
+                        <group>
+                            <field name="name" default_focus="1"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="date_of_birth"/>
+                                <field name="age"/>
+
+                            </group>
+                            <group>
+                                <field name="ref" readonly="1"/>
+
+                            </group>
+                        </group>
+                        <group>
+                            <field name="gender"/>
+                        </group>
+                        <notebook>
+                            <page string="Notes">
+                                <field name="notes"/>
+                            </page>
+                            <page string="Added by">
+                                <field name="create_uid"/>
+                                <br/>
+                                <field name="create_date"/>
+                            </page>
+                            <page string="Modified by">
+                                <field name="write_date"/>
+                                <br/>
+                                <field name="write_uid"/>
+                            </page>
+                            <page string="Chat">
+                                <div class="oe_chatter">
+                                    <field name="message_follower_ids"/>
+                                    <field name="activity_ids"/>
+                                    <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+                                </div>
+                            </page>
+                        </notebook>
+
+                    </sheet>
+
+
+                </form>
+            </field>
+        </record>
+        <!-- Tree Views -->
+        <record model="ir.ui.view" id="patient_tree_view">
+            <field name="name">patient.tree</field>
+            <field name="model">hospital.patient</field>
+            <field name="arch" type="xml">
+                <tree string="Patient List" class="text-center" sample="1">
+                    <field name="ref"/>
+                    <field name="name"/>
+                    <field name="gender"/>
+                    <field name="age" class="text-center"/>
+                    <field name="notes"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <!-- Search View and filters -->
+        <record model="ir.ui.view" id="patient_search_view">
+            <field name="name">patient.search</field>
+            <field name="model">hospital.patient</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="age"/>
+                    <filter name="filter_male" domain="[('gender','=','male')]" string="Male"/>
+                    <filter name="filter_female" domain="[('gender','=','female')]" string="Female"/>
+                    <filter name="under_age" domain="[('age','&lt;=','18')]" string="Under 18"/>
+                    <separator/>
+                    <filter name="filter_archived" domain="[('active','=',False)]" string="Archived"/>
+                    <!-- Group by -->
+                    <group expand="0" string="Group By">
+                        <filter name="filter_gender" string="Gender" context="{'group_by':'gender'}"/>
+                        <filter name="filter_state" string="state" context="{'group_by':'state'}"/>
+                    </group>
+                    <searchpanel>
+                        <field name="gender" icon="fa-venus" enable_counters="1"/>
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+        <!-- Actions -->
+        <record model="ir.actions.act_window" id="patient_list_action">
+            <field name="name">Patients</field>
+            <field name="res_model">hospital.patient</field>
+            <field name="context">{'search_default_filter_male':'male'}</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create the First Patient
+                </p>
+            </field>
+        </record>
+        <!-- Patient Female Action -->
+        <record model="ir.actions.act_window" id="patient_female_list_action">
+            <field name="name">Female patients</field>
+            <field name="res_model">hospital.patient</field>
+            <field name="context">{'search_default_filter_female':'female'}</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('gender','=','female')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create the First Patient Female
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

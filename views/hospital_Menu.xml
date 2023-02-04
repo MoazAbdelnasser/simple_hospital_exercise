@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Menus -->
+        <menuitem id="hospital_main_menu" name="Hospital" web_icon="om_hospital,static/description/icon.png"/>
+        <menuitem id="hospital_menu" parent="hospital_main_menu" name="Patients Info"/>
+        <menuitem id="hospital_patient" parent="hospital_menu" name="Patients"
+                  action="patient_list_action"/>
+        <menuitem id="hospital_patient_female" parent="hospital_menu" name="Patients Female"
+                  action="patient_female_list_action"/>
+
+        <menuitem id="hospital_main_appointments" parent="hospital_main_menu" name="Appointments"/>
+        <menuitem id="hospital_appointments" parent="hospital_main_appointments" name="Appointments"
+                  action="appointments_list_action"/>
+
+    </data>
+</odoo>

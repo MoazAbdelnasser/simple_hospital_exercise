@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Views -->
+        <!-- Form Views -->
+        <record model="ir.ui.view" id="appointments_form_view">
+            <field name="name">appointments.form</field>
+            <field name="model">hospital.appointments</field>
+            <field name="priority" eval="16"/>
+            <field name="arch" type="xml">
+                <form string="Appointment form">
+                    <header>
+                        <button string="Draft" states="confirmed" class="btn-primary"
+                                name="draft_appointment" type="object"/>
+                        <button string="confirmed" states="draft" class="btn-info"
+                                name="confirm_appointment" type="object"/>
+                        <button string="Consultation" states="draft,confirmed" class="btn-warning"
+                                name="consult_appointment" type="object"/>
+                        <button string="Done" states="confirmed,in_consultation" class="btn-success"
+                                name="done_appointment" type="object"/>
+                        <button string="Cancel" states="confirmed,draft" class="btn-danger"
+                                name="cancel_appointment" type="object"
+                                confirm="Are rou sure you need to Cancel ?"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+
+                        <h2>
+                            <field name="priority" widget="priority"/>
+                        </h2>
+                        <group>
+                            <field name="appointment_serial"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="patient_name"/>
+                                <field name="age"/>
+                                <field name="gender"/>
+                            </group>
+                            <group>
+                                <field name="doctor" widget="many2one_avatar"/>
+                                <field name="booking_date"/>
+                                <field name="appointment_time" default_focus="1"/>
+                            </group>
+                        </group>
+
+
+                        <notebook>
+                            <page string="prescription" name="prescription">
+                                <field name="prescription" placeholder="Enter your Rescrption"
+                                       options="{'collaborative' : true , 'resizable' : true}"/>
+                            </page>
+                            <page string="Internal Chat" name="Chat">
+
+                                <div class="oe_chatter">
+                                    <field name="message_follower_ids"/>
+                                    <field name="activity_ids"/>
+                                    <field name="message_ids"/>
+                                </div>
+                            </page>
+                        </notebook>
+                    </sheet>
+
+                </form>
+            </field>
+        </record>
+        <!-- Tree Views -->
+        <record model="ir.ui.view" id="appointments_tree_view">
+            <field name="name">appointments.tree</field>
+            <field name="model">hospital.appointments</field>
+            <field name="arch" type="xml">
+                <tree string="Appointments List" class="text-center" multi_edit="1"
+                      decoration-info="(state in('draft','confirmed'))"
+                      decoration-warning="(state == 'in_consultation')"
+                      decoration-success="(state == 'done')"
+                      decoration-danger="(state == 'cancel')"
+                >
+                    <field name="appointment_serial"/>
+                    <field name="patient_name"/>
+                    <field name="doctor" widget="many2one_avatar_user"/>
+                    <field name="age"/>
+                    <field name="gender"/>
+                    <field name="booking_date"/>
+                    <field name="appointment_time" optional="show"/>
+                    <field name="activity_ids" widget="list_activity" optional="show"/>
+                    <field name="message_follower_ids" optional="hide"/>
+                    <field name="message_ids" optional="hide"/>
+
+                    <field name="state" widget="badge"
+                           decoration-info="(state in('draft','confirmed'))"
+                           decoration-warning="(state == 'in_consultation')"
+                           decoration-success="(state == 'done')"
+                           decoration-danger="(state == 'cancel')"
+                    />
+                </tree>
+            </field>
+        </record>
+        <!-- Search Views -->
+        <record model="ir.ui.view" id="appointments_search_view">
+            <field name="name">appointments.search</field>
+            <field name="model">hospital.appointments</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="appointment_serial" filter_domain="['|','|',('appointment_serial','ilike',self),
+                    ('patient_name','ilike',self),
+                    ('gender','ilike',self)]"/>
+                </search>
+            </field>
+        </record>
+        <!-- Actions -->
+        <record model="ir.actions.act_window" id="appointments_list_action">
+            <field name="name">Appointments</field>
+            <field name="res_model">hospital.appointments</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create the First Appointment
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

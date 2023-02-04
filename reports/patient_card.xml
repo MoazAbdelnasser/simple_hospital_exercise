@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Print Patient_Card template -->
+        <template id="patient_report">
+            <t t-call="web.external_layout">
+                <t t-call="web.html_container">
+                    <div class="page">
+                        <table class="table" name="Patient_line_table">
+                            <thead>
+                                <t t-foreach="docs" t-as="doc">
+                                    <tr>
+                                        <th name="ref" class="text-center">
+                                            <span>Patient Code</span>
+                                        </th>
+                                        <th name="name" class="text-center">
+                                            <span>Patient Name</span>
+                                        </th>
+                                        <th name="age" class="text-center">
+                                            <span>Age</span>
+                                        </th>
+                                        <th name="gender" class="text-center">
+                                            <span>Gender</span>
+                                        </th>
+                                    </tr>
+                                </t>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th name="ref" class="text-center">
+                                        <t t-esc="doc.ref"/>
+                                    </th>
+                                    <th name="name" class="text-center">
+                                        <t t-esc="doc.name"/>
+                                    </th>
+                                    <th name="age" class="text-center">
+                                        <t t-esc="doc.age"/>
+                                    </th>
+                                    <th name="gender" class="text-center">
+                                        <t t-esc="doc.gender"/>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>
