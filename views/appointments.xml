@@ -11,16 +11,19 @@
                 <form string="Appointment form">
                     <header>
                         <button string="Draft" states="confirmed" class="btn-primary"
-                                name="draft_appointment" type="object"/>
+                                name="draft_appointment" type="object"
+                        />
                         <button string="confirmed" states="draft" class="btn-info"
-                                name="confirm_appointment" type="object"/>
+                                name="confirm_appointment" type="object"
+                                data-hotkey="o"/>
                         <button string="Consultation" states="draft,confirmed" class="btn-warning"
                                 name="consult_appointment" type="object"/>
                         <button string="Done" states="confirmed,in_consultation" class="btn-success"
                                 name="done_appointment" type="object"/>
                         <button string="Cancel" states="confirmed,draft" class="btn-danger"
                                 name="cancel_appointment" type="object"
-                                confirm="Are rou sure you need to Cancel ?"/>
+                                confirm="Are rou sure you need to Cancel ?"
+                                data-hotkey="d"/>
                         <field name="state" widget="statusbar"/>
                     </header>
                     <sheet>
@@ -69,11 +72,12 @@
             <field name="name">appointments.tree</field>
             <field name="model">hospital.appointments</field>
             <field name="arch" type="xml">
-                <tree string="Appointments List" class="text-center" multi_edit="1"
+                <tree string="Appointments List" class="text-center"
                       decoration-info="(state in('draft','confirmed'))"
                       decoration-warning="(state == 'in_consultation')"
                       decoration-success="(state == 'done')"
                       decoration-danger="(state == 'cancel')"
+                      multi_edit="1"
                 >
                     <field name="appointment_serial"/>
                     <field name="patient_name"/>

@@ -60,8 +60,8 @@ class HospitalAppointments(models.Model):
         print(vals)
         vals['appointment_serial'] = self.env['ir.sequence'].next_by_code('hospital.appointments')
         return super(HospitalAppointments, self).create(vals)
-
-    def write(self, vals):
-        if not self.appointment_serial:
-            vals['appointment_serial'] = self.env['ir.sequence'].next_by_code('hospital.appointments')
-        return super(HospitalAppointments, self).write(vals)
+    #
+    # def write(self, vals):
+    #     if not self.appointment_serial:
+    #         vals['appointment_serial'] = self.env['ir.sequence'].next_by_code('hospital.appointments')
+    #     return super(HospitalAppointments, self).write(vals)
